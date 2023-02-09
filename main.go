@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/base64"
-	"encoding/hex"
+	"net/url"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -35,17 +35,17 @@ func main() {
 		text.SetText(string(decoded))
 	})
 
-	ButtonHexEncode := widget.NewButton("Hex Encode", func() {
-		text.SetText(hex.EncodeToString([]byte(input.Text)))
+	ButtonUrlEncode := widget.NewButton("URL Encode", func() {
+		text.SetText(url.QueryEscape(input.Text))
 	})
 
-	ButtonHexDecode := widget.NewButton("Hex Decode", func() {
-		decoded, err := hex.DecodeString(input.Text)
+	ButtonUrlDecode := widget.NewButton("URL Decode", func() {
+		decoded, err := url.QueryUnescape(input.Text)
 		if err != nil {
 			dialog.ShowError(err, w)
 		}
 
-		text.SetText(string(decoded))
+		text.SetText(decoded)
 	})
 
 	w.SetContent(
@@ -54,8 +54,8 @@ func main() {
 			input,
 			ButtonB64Encode,
 			ButtonB64Decode,
-			ButtonHexEncode,
-			ButtonHexDecode,
+			ButtonUrlEncode,
+			ButtonUrlDecode,
 			fyne.NewContainerWithLayout(layout.NewVBoxLayout(), text),
 		),
 	)
