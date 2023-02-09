@@ -39,6 +39,15 @@ func main() {
 		text.SetText(hex.EncodeToString([]byte(input.Text)))
 	})
 
+	ButtonHexDecode := widget.NewButton("Hex Decode", func() {
+		decoded, err := hex.DecodeString(input.Text)
+		if err != nil {
+			dialog.ShowError(err, w)
+		}
+
+		text.SetText(string(decoded))
+	})
+
 	w.SetContent(
 		fyne.NewContainerWithLayout(
 			layout.NewVBoxLayout(),
@@ -46,6 +55,7 @@ func main() {
 			ButtonB64Encode,
 			ButtonB64Decode,
 			ButtonHexEncode,
+			ButtonHexDecode,
 			fyne.NewContainerWithLayout(layout.NewVBoxLayout(), text),
 		),
 	)
